@@ -9,13 +9,26 @@ const int LED_PIN_R = 4;
 const int LED_PIN_G = 6;
 volatile int fall_red = 0;
 volatile int fall_green = 0;
+volatile int rise_red = 0;
+volatile int rise_green = 0;
 
 void btn_callback(uint gpio, uint32_t events) {
   if (events == 0x4) { // fall edge
     if (gpio == BTN_PIN_R){
+      rise_red = 0;
       fall_red = 1;
     }else if (gpio == BTN_PIN_G){
+      rise_green = 0;
       fall_green = 1;
+  }
+  }
+  if (events == 0x8) { // rise edge
+    if (gpio == BTN_PIN_R){
+      fall_red = 0;
+      rise_red = 1;
+    }else if (gpio == BTN_PIN_G){
+      fall_green = 0;
+      rise_green = 1;
   }}
 }
 
@@ -43,11 +56,20 @@ int main() {
 
   while (true) {
     if (fall_red ==1){
-      gpio_put(LED_PIN_R, !gpio_get(LED_PIN_R));
+      gpio_put(LED_PIN_R, 1);
       fall_red = 0;
-    }if (fall_green ==1){
-      gpio_put(LED_PIN_G, !gpio_get(LED_PIN_G));
+    }
+    if (rise_red == 1){
+      gpio_put(LED_PIN_R, 0);
+      rise_red = 0;
+    }
+    if (fall_green ==1){
+      gpio_put(LED_PIN_G, 1);
       fall_green = 0;
     }
+    if (rise_green == 1){
+      gpio_put(LED_PIN_G, 0);
+      rise_green = 0;
   }
+}
 }

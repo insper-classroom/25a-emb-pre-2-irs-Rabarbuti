@@ -28,9 +28,12 @@ int main() {
       BTN_PIN_R, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &btn_callback);
 
   while (true) {
-    if (bnt_rise ==1){
-      gpio_put(LED_PIN, !gpio_get(LED_PIN));
+    if (bnt_rise == 1){
+      gpio_put(LED_PIN, 0);
       bnt_rise = 0;
+    }else if (btn_fall == 1){
+      gpio_put(LED_PIN, 1);
+      btn_fall = 0;
     }
   }
 }
