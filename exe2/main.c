@@ -11,7 +11,7 @@ void btn_callback(uint gpio, uint32_t events) {
   if (events == 0x4) { // fall edge
     btn_fall = 1;
   } else if (events == 0x8) { // rise edge
-    bnt_rise = 1;
+    bnt_rise = 0;
   }
 }
 
